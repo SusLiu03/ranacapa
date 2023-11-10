@@ -6,6 +6,6 @@ runRanacapaApp <- function() {
     stop("Could not find example directory. Try re-installing `ranacapa`.", call. = FALSE)
   }
 
-  shiny::runApp(appDir, display.mode = "normal")
+  shiny::runApp(appDir, port = 8000, display.mode = "normal")
 }
 
