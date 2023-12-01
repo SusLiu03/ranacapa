@@ -16,7 +16,8 @@ options(digits = 5, shiny.maxRequestSize = 10 * 1024 ^ 2)
 
 server <- function(input, output)({
 
-  # Setup and RenderUIs ---------------
+  # Setup and Rende
+  Is ---------------
   # RenderUI for which_variable_r, gets used in Panels 1, 3, 4, 5, 6
   output$which_variable_r <- renderUI({
     selectInput("var", "Select the variable", choices = heads())
@@ -372,7 +373,7 @@ server <- function(input, output)({
       } else {
         physeqGlommed = tax_glom(data_subset(), input$taxon_level)
       }
-      plot_bar(physeqGlommed, fill = input$taxon_level) + theme_ranacapa() +
+      plot_bar(physeqGlommed, fill = input$taxon_level) + theme_ranacapa() + facet_grid = input$var +
         theme(axis.text.x = element_text(angle = 45)) +
         theme(axis.title = element_blank())
       gp <- ggplotly() %>%
