@@ -377,7 +377,7 @@ server <- function(input, output)({
         theme(axis.title = element_blank())
       gp <- ggplotly() %>%
         layout(yaxis = list(title = "Abundance", titlefont = list(size = 16)),
-               xaxis = list(title = "Sample", titlefont = list(size = 16)),
+               xaxis = list(title = input$var, titlefont = list(size = 16)),
                margin = list(l = 70, b = 100))
       gp
     })
