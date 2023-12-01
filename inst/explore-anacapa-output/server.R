@@ -375,7 +375,7 @@ server <- function(input, output)({
       plot_bar(physeqGlommed, fill = input$taxon_level) + theme_ranacapa() + 
         theme(axis.text.x = element_text(angle = 45)) +
         theme(axis.title = element_blank())
-      gp <- ggplotly() %>%
+      gp <- ggplotly(tooltip = c("x", "value")) %>%
         layout(yaxis = list(title = "Abundance", titlefont = list(size = 16)),
                xaxis = list(title = input$var, titlefont = list(size = 16)),
                margin = list(l = 70, b = 100))
