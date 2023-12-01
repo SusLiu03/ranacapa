@@ -24,10 +24,6 @@ server <- function(input, output)({
   output$which_variable_alphaDiv <- renderUI({
     selectInput("var_alpha", "Select the variable", choices = heads_alpha_Anova())
   })
-  output$which_variable_taxonomy <- renderUI({
-  selectInput("var_taxonomy", "Select the variable", choices = heads())
-  })
-
   # RenderUIs for Panel 1
   output$biomSelect <- renderUI({
     req(input$mode)
@@ -370,13 +366,13 @@ server <- function(input, output)({
 
     withProgress(message = 'Rendering taxonomy barplot', value = 0, {
       incProgress(0.5)
-      var_taxonomy <- input$var_taxonomy
+
       if (input$rared_taxplots == "unrarefied") {
         physeqGlommed = tax_glom(data_subset_unrare(), input$taxon_level)
       } else {
         physeqGlommed = tax_glom(data_subset(), input$taxon_level)
       }
-      plot_bar(physeqGlommed, fill = input$var_taxonomy) + theme_ranacapa() +
+      plot_bar(physeqGlommed, fill = input$taxon_level) + theme_ranacapa() + 
         theme(axis.text.x = element_text(angle = 45)) +
         theme(axis.title = element_blank())
       gp <- ggplotly() %>%
