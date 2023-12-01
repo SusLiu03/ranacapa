@@ -362,27 +362,30 @@ server <- function(input, output)({
 
 
 
-  # Panel 7: Taxonomy-by-site interactive barplot -------
-  output$tax_bar <- renderPlotly({
+# Panel 7: Taxonomy-by-site interactive barplot -------
+output$tax_bar <- renderPlotly({
+  withProgress(message = 'Rendering taxonomy barplot', value = 0, {
+    incProgress(0.5)
 
-    withProgress(message = 'Rendering taxonomy barplot', value = 0, {
-      incProgress(0.5)
+    if (input$rared_taxplots == "unrarefied") {
+      physeqGlommed = tax_glom(data_subset_unrare(), input$taxon_level)
+    } else {
+      physeqGlommed = tax_glom(data_subset(), input$taxon_level)
+    }
 
-      if (input$rared_taxplots == "unrarefied") {
-        physeqGlommed = tax_glom(data_subset_unrare(), input$taxon_level)
-      } else {
-        physeqGlommed = tax_glom(data_subset(), input$taxon_level)
-      }
-      plot_bar(physeqGlommed, fill = input$taxon_level) + theme_ranacapa() + facet_grid = input$var +
-        theme(axis.text.x = element_text(angle = 45)) +
-        theme(axis.title = element_blank())
-      gp <- ggplotly() %>%
-        layout(yaxis = list(title = "Abundance", titlefont = list(size = 16)),
-               xaxis = list(title = "Sample", titlefont = list(size = 16)),
-               margin = list(l = 70, b = 100))
-      gp
-    })
+    gp <- plot_bar(physeqGlommed, fill = input$taxon_level) + 
+      theme_ranacapa() +
+      facet_grid(input$var) +
+      theme(axis.text.x = element_text(angle = 45)) +
+      theme(axis.title = element_blank()) +
+      ggplotly() %>%
+      layout(yaxis = list(title = "Abundance", titlefont = list(size = 16)),
+             xaxis = list(title = "Sample", titlefont = list(size = 16)),
+             margin = list(l = 70, b = 100))
+
+    gp
   })
+})
 
 
   ## Panel 8: Heatmap of taxonomy by site ---------
