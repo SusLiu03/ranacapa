@@ -16,8 +16,7 @@ options(digits = 5, shiny.maxRequestSize = 10 * 1024 ^ 2)
 
 server <- function(input, output)({
 
-  # Setup and Rende
-  Is ---------------
+  # Setup and RenderUIs ---------------
   # RenderUI for which_variable_r, gets used in Panels 1, 3, 4, 5, 6
   output$which_variable_r <- renderUI({
     selectInput("var", "Select the variable", choices = heads())
@@ -362,30 +361,27 @@ server <- function(input, output)({
 
 
 
-# Panel 7: Taxonomy-by-site interactive barplot -------
-output$tax_bar <- renderPlotly({
-  withProgress(message = 'Rendering taxonomy barplot', value = 0, {
-    incProgress(0.5)
+  # Panel 7: Taxonomy-by-site interactive barplot -------
+  output$tax_bar <- renderPlotly({
 
-    if (input$rared_taxplots == "unrarefied") {
-      physeqGlommed = tax_glom(data_subset_unrare(), input$taxon_level)
-    } else {
-      physeqGlommed = tax_glom(data_subset(), input$taxon_level)
-    }
+    withProgress(message = 'Rendering taxonomy barplot', value = 0, {
+      incProgress(0.5)
 
-    gp <- plot_bar(physeqGlommed, fill = input$taxon_level) + 
-      theme_ranacapa() +
-      facet_grid(input$var) +
-      theme(axis.text.x = element_text(angle = 45)) +
-      theme(axis.title = element_blank()) +
-      ggplotly() %>%
-      layout(yaxis = list(title = "Abundance", titlefont = list(size = 16)),
-             xaxis = list(title = "Sample", titlefont = list(size = 16)),
-             margin = list(l = 70, b = 100))
-
-    gp
+      if (input$rared_taxplots == "unrarefied") {
+        physeqGlommed = tax_glom(data_subset_unrare(), input$taxon_level)
+      } else {
+        physeqGlommed = tax_glom(data_subset(), input$taxon_level)
+      }
+      plot_bar(physeqGlommed, fill = input$taxon_level) + theme_ranacapa() + facet_grid = input$var +
+        theme(axis.text.x = element_text(angle = 45)) +
+        theme(axis.title = element_blank())
+      gp <- ggplotly() %>%
+        layout(yaxis = list(title = "Abundance", titlefont = list(size = 16)),
+               xaxis = list(title = "Sample", titlefont = list(size = 16)),
+               margin = list(l = 70, b = 100))
+      gp
+    })
   })
-})
 
 
   ## Panel 8: Heatmap of taxonomy by site ---------
