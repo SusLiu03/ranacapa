@@ -372,8 +372,19 @@ server <- function(input, output)({
       } else {
         physeqGlommed = tax_glom(data_subset(), input$taxon_level)
       }
-      
-      plot_bar(physeqGlommed, fill = input$taxon_level, x = input$var, group_by = input$taxon_level) + theme_ranacapa() + 
+      abundance_data <- otu_table(physeqGlommed) %>%
+        as.data.frame() %>%
+        rownames_to_column(var = "OTU")
+
+      taxonomy_data <- tax_table(physeqGlommed) %>%
+        as.data.frame() %>%
+        rownames_to_column(var = "OTU")
+
+      combined_data <- left_join(abundance_data, taxonomy_data, by = "OTU")
+
+      summarized_data <- combined_data %>%
+        group_by(input$taxon_level) 
+      plot_bar(summarized_data, fill = input$taxon_level, x = input$var) + theme_ranacapa() + 
         theme(axis.text.x = element_text(angle = 45)) +
         theme(axis.title = element_blank())
       gp <- ggplotly(tooltip = c("x", "value")) %>%
