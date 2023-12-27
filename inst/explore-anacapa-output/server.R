@@ -372,9 +372,8 @@ server <- function(input, output)({
       } else {
         physeqGlommed = tax_glom(data_subset(), input$taxon_level)
       }
-      physeqGlommed_grouped <- physeqGlommed %>%
-        group_by(input$taxon_level)
-      plot_bar(physeqGlommed_grouped, fill = input$taxon_level, x = input$var) + theme_ranacapa() + 
+      
+      plot_bar(physeqGlommed, fill = input$taxon_level, x = input$var, group_by = input$taxon_level) + theme_ranacapa() + 
         theme(axis.text.x = element_text(angle = 45)) +
         theme(axis.title = element_blank())
       gp <- ggplotly(tooltip = c("x", "value")) %>%
