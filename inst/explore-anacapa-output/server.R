@@ -365,6 +365,7 @@ server <- function(input, output)({
   output$tax_bar <- renderPlotly({
     print(input$var)
     print(input$taxon_level)
+    print(sample_variables(taxonomy_table()))
     withProgress(message = 'Rendering taxonomy barplot', value = 0, {
       incProgress(0.5)
 
