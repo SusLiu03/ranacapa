@@ -369,19 +369,24 @@ server <- function(input, output)({
       incProgress(0.5)
 
       if (input$rared_taxplots == "unrarefied") {
-        physeqGlommed = tax_glom(data_subset_unrare(), input$taxon_level)
+        used_data_subset <- data_subset_unrare()
+        physeqGlommed = tax_glom(used_data_subset, input$taxon_level)
+        taxonomy_table <- tax_table(used_data_subset)
+
+
       } else {
-        physeqGlommed = tax_glom(data_subset(), input$taxon_level)
+        used_data_subset <- data_subset()
+        physeqGlommed = tax_glom(used_data_subset, input$taxon_level)
+        taxonomy_table <- tax_table(used_data_subset)
+
       }
-      taxonomy_table <- tax_table(physeqGlommed)
       target_rank <- input$taxon_level
       rank_data <- sapply(strsplit(as.character(taxonomy_table[, target_rank]), ";"), function(x) tail(x, 1))
       taxonomy_table[[target_rank]] <- rank_data
       physeqGrouped <- phyloseq(
-        otu_table(physeqGlommed),
-        tax_table(taxonomy_table),
-        sample_data(physeqGlommed)
-      )
+      otu_table(used_data_subset),
+      tax_table(taxonomy_table),
+      sample_data(used_data_subset))
       print(sample_variables(physeqGrouped))
 
 
