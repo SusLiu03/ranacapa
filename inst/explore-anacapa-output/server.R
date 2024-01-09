@@ -374,9 +374,7 @@ server <- function(input, output)({
         physeqGlommed = tax_glom(data_subset(), input$taxon_level)
       }
       print(sample_variables(physeqGlommed))
-      mergedPhyseq = merge_samples(physeqGlommed, input$taxon_level, fun=sum)
-      #print('merged physec',mergedPhyseq)
-      #print('physeqglom', physeqGlommed)
+      mergedPhyseq = merge_phyloseq(physeqGlommed)
       plot_bar(mergedPhyseq, fill = input$taxon_level, x = input$var) + theme_ranacapa() + 
         theme(axis.text.x = element_text(angle = 45)) +
         theme(axis.title = element_blank())
