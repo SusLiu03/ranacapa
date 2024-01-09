@@ -373,9 +373,19 @@ server <- function(input, output)({
       } else {
         physeqGlommed = tax_glom(data_subset(), input$taxon_level)
       }
-      print(sample_variables(physeqGlommed))
-      mergedPhyseq = merge_phyloseq(physeqGlommed)
-      plot_bar(mergedPhyseq, fill = input$taxon_level, x = input$var) + theme_ranacapa() + 
+      taxonomy_table <- tax_table(physeqGlommed)
+      target_rank <- input$taxon_level
+      rank_data <- sapply(strsplit(as.character(taxonomy_table[, target_rank]), ";"), function(x) tail(x, 1))
+      taxonomy_table[[target_rank]] <- rank_data
+      physeqGrouped <- phyloseq(
+        otu_table(physeqGlommed),
+        tax_table(taxonomy_table),
+        sample_data(physeqGlommed)
+      )
+      print(sample_variables(physeqGrouped))
+
+
+      plot_bar(physeqGlommed, fill = input$taxon_level, x = input$var) + theme_ranacapa() + 
         theme(axis.text.x = element_text(angle = 45)) +
         theme(axis.title = element_blank())
       gp <- ggplotly(tooltip = c(input$taxon_level, "x", "y")) %>%
