@@ -371,23 +371,23 @@ server <- function(input, output)({
       if (input$rared_taxplots == "unrarefied") {
         used_data_subset <- data_subset_unrare()
         physeqGlommed = tax_glom(used_data_subset, input$taxon_level)
-        taxonomy_table <- tax_table(used_data_subset)
+        # taxonomy_table <- tax_table(used_data_subset)
 
 
       } else {
         used_data_subset <- data_subset()
         physeqGlommed = tax_glom(used_data_subset, input$taxon_level)
-        taxonomy_table <- tax_table(used_data_subset)
+        # taxonomy_table <- tax_table(used_data_subset)
 
       }
-      target_rank <- input$taxon_level
-      rank_data <- sapply(strsplit(as.character(taxonomy_table[, target_rank]), ";"), function(x) tail(x, 1)[1])
-      taxonomy_table[[target_rank]] <- rank_data
-      physeqGrouped <- phyloseq(
-      otu_table(used_data_subset),
-      tax_table(taxonomy_table),
-      sample_data(used_data_subset))
-      print(sample_variables(physeqGrouped))
+      # target_rank <- input$taxon_level
+      # rank_data <- sapply(strsplit(as.character(taxonomy_table[, target_rank]), ";"), function(x) tail(x, 1)[1])
+      # taxonomy_table[[target_rank]] <- rank_data
+      # physeqGrouped <- phyloseq(
+      # otu_table(used_data_subset),
+      # tax_table(taxonomy_table),
+      # sample_data(used_data_subset))
+      # print(sample_variables(physeqGrouped))
 
 
       plot_bar(physeqGlommed, fill = input$taxon_level, x = input$var) + theme_ranacapa() + 
