@@ -381,7 +381,7 @@ server <- function(input, output)({
 
       }
       target_rank <- input$taxon_level
-      rank_data <- sapply(strsplit(as.character(taxonomy_table[, target_rank]), ";"), function(x) tail(x, 1))
+      rank_data <- sapply(strsplit(as.character(taxonomy_table[, target_rank]), ";"), function(x) tail(x, 1)[1])
       taxonomy_table[[target_rank]] <- rank_data
       physeqGrouped <- phyloseq(
       otu_table(used_data_subset),
