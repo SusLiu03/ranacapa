@@ -364,6 +364,7 @@ server <- function(input, output)({
   # Panel 7: Taxonomy-by-site interactive barplot -------
   output$tax_bar <- renderPlotly({
     print(input$var)
+    print(input$taxon_level)
     withProgress(message = 'Rendering taxonomy barplot', value = 0, {
       incProgress(0.5)
 
@@ -372,22 +373,11 @@ server <- function(input, output)({
       } else {
         physeqGlommed = tax_glom(data_subset(), input$taxon_level)
       }
-      abundance_data <- otu_table(physeqGlommed) %>%
-        as.data.frame() %>%
-        rownames_to_column(var = "OTU")
-
-      taxonomy_data <- tax_table(physeqGlommed) %>%
-        as.data.frame() %>%
-        rownames_to_column(var = "OTU")
-
-      combined_data <- left_join(abundance_data, taxonomy_data, by = "OTU")
-
-      summarized_data <- combined_data %>%
-        group_by(input$taxon_level) 
-      plot_bar(summarized_data, fill = input$taxon_level, x = input$var) + theme_ranacapa() + 
+      
+      plot_bar(physeqGlommed, fill = input$taxon_level, x = input$var) + theme_ranacapa() + 
         theme(axis.text.x = element_text(angle = 45)) +
         theme(axis.title = element_blank())
-      gp <- ggplotly(tooltip = c("x", "value")) %>%
+      gp <- ggplotly(tooltip = c(input$var, "x", "y")) %>%
         layout(yaxis = list(title = "Abundance", titlefont = list(size = 16)),
                xaxis = list(title = input$var, titlefont = list(size = 16)),
                margin = list(l = 70, b = 100))
