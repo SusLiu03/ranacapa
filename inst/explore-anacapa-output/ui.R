@@ -23,7 +23,7 @@ shinyUI(bootstrapPage(theme = shinytheme("sandstone"),
 
     # For panels 3, 4, 5, 6, 7, 8 ask user which varible they would like to visualize on
     conditionalPanel(condition = "input.tabselected == 3 | input.tabselected == 5 |
-                     input.tabselected == 6 | input.tabselected == 2 | input.tabselected == 7 | input.tabselected==8",
+                     input.tabselected == 6 | input.tabselected == 2 | input.tabselected == 7",
                      uiOutput("which_variable_r")),
 
     # On panel 3 (rarefaction), ask what depth they want to rarefy to

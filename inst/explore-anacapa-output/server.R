@@ -365,7 +365,7 @@ server <- function(input, output)({
   output$tax_bar <- renderPlotly({
     print(input$var)
     print(input$taxon_level)
-    print(sample_variables(taxonomy_table()))
+    print(taxonomy_table()$sum.taxonomy)
     withProgress(message = 'Rendering taxonomy barplot', value = 0, {
       incProgress(0.5)
 
@@ -445,7 +445,7 @@ server <- function(input, output)({
       }
       for_hm <- for_hm()[selected_taxa,]
       heatmaply(for_hm, Rowv = F, Colv = F, hide_colorbar = F,
-                grid_gap = 1, na.value = "white", key.title = paste("Number of \nSequences in \n",input$var))
+                grid_gap = 1, na.value = "white", key.title = paste("Number of \nSequences in \nSample"))
     })
 
   })
