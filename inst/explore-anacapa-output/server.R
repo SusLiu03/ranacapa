@@ -114,6 +114,8 @@ server <- function(input, output)({
     if (input$mode == "Custom") {
       if (grepl(input$in_taxon_table$datapath, pattern = ".txt") |
           grepl(input$in_taxon_table$datapath, pattern = ".tsv")) {
+        # Debug the path name
+        cat("filepath for taxonomy_table: ",input$in_taxon_table$datapath)
         read.table(input$in_taxon_table$datapath, header = 1,
                    sep = "\t", stringsAsFactors = F,
                    quote = "", comment.char = "") %>%
@@ -141,6 +143,8 @@ server <- function(input, output)({
           as.matrix() %>%
           as.data.frame()
       } else {
+         # Debug the path name
+        cat("filepath for table mapping_file: ",input$in_taxon_table$datapath)
         read.table(input$in_metadata$datapath,
                    header = 1, sep = "\t", stringsAsFactors = F,
                    quote = "", comment.char = "")
